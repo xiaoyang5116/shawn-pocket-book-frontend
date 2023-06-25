@@ -1,7 +1,7 @@
 import axios from "axios";
 import { Toast } from "antd-mobile";
 
-const MODE = import.meta.env.MODE; // 环境变量
+const MODE = import.meta.env.VITE_API_URL; // 环境变量
 
 axios.defaults.baseURL =
   MODE == "development" ? "/api" : "http://api.chennick.wang";
