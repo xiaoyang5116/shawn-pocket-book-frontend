@@ -1,24 +1,15 @@
-import { Link, Outlet } from "react-router-dom";
-import { Button, SafeArea } from "antd-mobile";
+import { Outlet } from "react-router-dom";
 import Footer from "../../components/footer/footer.component";
+
+import styles from "./navigation.module.scss";
 
 const Navigation = () => {
   return (
-    <div>
-      <div style={{ background: "#1677ff" }}>
-        <SafeArea position="top" />
+    <div className={styles.container}>
+      <div className={styles.body}>
+        <Outlet />
       </div>
-      <Link to={"/"}>
-        <Button>首页</Button>
-      </Link>
-      <Link to={"/sign-in"}>
-        <Button>登录</Button>
-      </Link>
-      <Outlet />
       <Footer />
-      <div style={{ background: "#1677ff" }}>
-        <SafeArea position="bottom" />
-      </div>
     </div>
   );
 };

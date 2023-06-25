@@ -1,24 +1,31 @@
 import { TabBar, Badge } from "antd-mobile";
 import { BillOutline, HistogramOutline, UserOutline } from "antd-mobile-icons";
+import { useNavigate } from "react-router-dom";
 
 const Footer = () => {
+  const navigate = useNavigate();
+
+  const navigationHandler = (key: string): void => {
+    navigate(`/${key}`);
+  };
+
   return (
-    <div style={{ background: "#1677ff" }}>
-      <TabBar>
+    <div className="safeArea-container ">
+      <TabBar onChange={navigationHandler}>
         <TabBar.Item
-          key={"账单"}
+          key={""}
           icon={<BillOutline />}
           title={"账单"}
           badge={Badge.dot}
         />
         <TabBar.Item
-          key={"统计"}
+          key={"statistics"}
           icon={<HistogramOutline />}
           title={"统计"}
           badge={Badge.dot}
         />
         <TabBar.Item
-          key={"我的"}
+          key={"user"}
           icon={<UserOutline />}
           title={"我的"}
           badge={Badge.dot}
