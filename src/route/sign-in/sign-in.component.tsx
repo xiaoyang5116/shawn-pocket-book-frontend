@@ -1,5 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from "react";
-import { Button, Toast } from "antd-mobile";
+// import { ChangeEvent, FormEvent, useState } from "react";
+import { Button } from "antd-mobile";
 import FormInput from "../../components/form-input/form-input.component";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -43,7 +43,7 @@ const SignIn = () => {
   });
 
   const onSubmit = (values: FormData) => {
-    // console.log("values", values);
+    console.log("values", values);
   };
 
   return (
