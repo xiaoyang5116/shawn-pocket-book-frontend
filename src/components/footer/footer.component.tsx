@@ -2,6 +2,8 @@ import { TabBar, Badge } from "antd-mobile";
 import { BillOutline, HistogramOutline, UserOutline } from "antd-mobile-icons";
 import { useNavigate } from "react-router-dom";
 
+import styles from "./footer.styles.module.scss";
+
 const Footer = () => {
   const navigate = useNavigate();
 
@@ -10,7 +12,7 @@ const Footer = () => {
   };
 
   return (
-    <div className="safeArea-container ">
+    <div className={`safeArea-container ${styles.container}`}>
       <TabBar onChange={navigationHandler}>
         <TabBar.Item
           key={""}
