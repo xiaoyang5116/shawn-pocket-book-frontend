@@ -4,7 +4,6 @@ import { Button } from "antd-mobile";
 const SignIn = () => {
   return (
     <div>
-      <h1 className="text-3xl font-bold underline text-center">Hello world!</h1>
       <Button block color="primary" size="large">
         sign in
       </Button>
