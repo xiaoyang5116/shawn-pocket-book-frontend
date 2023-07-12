@@ -13,17 +13,6 @@ type FormData = {
 };
 
 const SignIn = () => {
-  // const [formFields, setFormFields] = useState<FormData>({
-  //   email: "",
-  //   password: "",
-  // });
-  // const { email, password } = formFields;
-
-  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const { name, value } = event.target;
-  //   setFormFields({ ...formFields, [name]: value });
-  // };
-
   const validationSchema: ZodType<FormData> = z.object({
     email: z.string().email("不合法邮箱"),
     password: z.string().min(6, "密码最少6位"),
@@ -42,8 +31,17 @@ const SignIn = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = (values: FormData) => {
+  const onSubmit = async (values: FormData) => {
     console.log("values", values);
+
+    try {
+      // const data = await fetch("http://localhost:3000/user");
+      const data = await fetch("/api/user");
+      console.log(data);
+      
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   return (
