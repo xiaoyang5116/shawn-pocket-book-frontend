@@ -45,3 +45,44 @@ a:hover {
 .safeArea-container {
   background: #efefef;
 }
+
+#root {
+  .adm-list-body,
+  .adm-list-item {
+    background-color: transparent;
+  }
+  .adm-list-body {
+    border: none;
+  }
+  .adm-list-item-content {
+    border: none;
+  }
+}
+
+input {
+  border: none;
+  outline: none;
+  padding: 0;
+  margin: 0;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: none;
+  background-color: transparent;
+  font-size: inherit;
+}
+input:focus {
+  outline: none;
+}
+
+// 谷歌 自动填充
+input:-webkit-autofill {
+  -webkit-text-fill-color: #000;
+  -webkit-box-shadow: 0 0 0px 1000px rgba(252, 252, 252, 0) inset;
+}
+input:-webkit-autofill,
+input:-webkit-autofill:focus {
+  transition:
+    background-color 600000s 0s,
+    color 600000s 0s;
+}
