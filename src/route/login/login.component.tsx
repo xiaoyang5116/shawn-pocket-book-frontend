@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LockOutline, UserOutline } from "antd-mobile-icons";
 import { Button } from "antd-mobile";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,8 @@ import { z, ZodType } from "zod";
 import { request } from "../../utils/axios.utils";
 
 import styles from "./login.styles.module.scss";
+import { useSetToken, useToken } from "../../stores/token.store";
+import { useNavigate } from "react-router-dom";
 
 type FormData = {
   username: string;
@@ -14,7 +16,16 @@ type FormData = {
 };
 
 const Login = () => {
+  const setToken = useSetToken();
+  const token = useToken();
+  const navigate = useNavigate();
   const [tab, setTab] = useState("login");
+
+  useEffect(() => {
+    if (token) {
+      navigate("/");
+    }
+  }, [token, navigate]);
 
   const validationSchema: ZodType<FormData> = z.object({
     username: z.string().min(1, "*请输入账号"),
@@ -29,7 +40,9 @@ const Login = () => {
   });
 
   const onSubmit = async (data: FormData) => {
-    request.post("/user/login", data);
+    const result: { token: string } = await request.post("/user/login", data);
+    setToken(result.token);
+    navigate("/");
   };
 
   return (
@@ -74,44 +87,10 @@ const Login = () => {
           block
           color="primary"
           size="large"
-          // loading
-          // loadingText="正在加载"
         >
-          登录
+          {tab === "login" ? "登录" : "注册"}
         </Button>
       </form>
-
-      {/* <Form layout="horizontal" className={styles.form}>
-        <Form.Item label="账号" name="username">
-          <Input placeholder="请输入内容" clearable className={styles.input} />
-        </Form.Item>
-        <Form.Item
-          label="密码"
-          name="password"
-          extra={
-            <div className={styles.eye}>
-              {!visible ? (
-                <EyeInvisibleOutline
-                  onClick={() => setVisible(true)}
-                  className={styles.icon}
-                />
-              ) : (
-                <EyeOutline
-                  onClick={() => setVisible(false)}
-                  className={styles.icon}
-                />
-              )}
-            </div>
-          }
-        >
-          <Input
-            placeholder="请输入密码"
-            clearable
-            type={visible ? "text" : "password"}
-            className={styles.input}
-          />
-        </Form.Item>
-      </Form> */}
     </div>
   );
 };
