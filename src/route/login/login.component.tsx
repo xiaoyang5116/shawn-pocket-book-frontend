@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { LockOutline, UserOutline } from "antd-mobile-icons";
-import { Form, Input, Button } from "antd-mobile";
+import { Button } from "antd-mobile";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z, ZodType } from "zod";
+import { request } from "../../utils/axios.utils";
 
 import styles from "./login.styles.module.scss";
 
@@ -27,8 +28,8 @@ const Login = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = (data: FormData) => {
-    // fetch;
+  const onSubmit = async (data: FormData) => {
+    request.post("/user/login", data);
   };
 
   return (
