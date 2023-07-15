@@ -37,7 +37,7 @@ const createAxiosByInterceptors = (
     baseURL:
       MODE == "development"
         ? "http://127.0.0.1:5173/api"
-        : "http://47.99.134.126:7009",
+        : "https://nest-test-60543-10-1305656531.sh.run.tcloudbase.com",
     timeout: 60000, // 请求超时时间毫秒
     withCredentials: true, // 异步请求携带cookie
     headers: {
