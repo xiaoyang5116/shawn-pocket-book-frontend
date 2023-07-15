@@ -3,6 +3,7 @@ import { SafeArea } from "antd-mobile";
 import SignIn from "./route/sign-in/sign-in.component";
 import Navigation from "./route/navigation/navigation.component";
 import Login from "./route/login/login.component";
+import NoMatch from "./route/no-match/no-match.component";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         </Route>
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/login" element={<Login />} />
+        <Route path="*" element={<NoMatch />} />
       </Routes>
       <div className="safeArea-container">
         <SafeArea position="bottom" />
