@@ -1,11 +1,22 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import { SafeArea } from "antd-mobile";
 import SignIn from "./route/sign-in/sign-in.component";
 import Navigation from "./route/navigation/navigation.component";
 import NoMatch from "./route/no-match/no-match.component";
 import Authentication from "./route/authentication/authentication.component";
+import { useToken } from "./stores/token.store";
+import { useEffect } from "react";
 
 function App() {
+  const token = useToken();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!token) {
+      navigate("/auth");
+    }
+  }, []);
+
   return (
     <>
       <div className="safeArea-container">
