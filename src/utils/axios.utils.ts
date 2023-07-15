@@ -39,7 +39,6 @@ const createAxiosByInterceptors = (
         ? "http://127.0.0.1:5173/api"
         : "https://nest-test-60543-10-1305656531.sh.run.tcloudbase.com",
     timeout: 60000, // 请求超时时间毫秒
-    withCredentials: true, // 异步请求携带cookie
     headers: {
       // 设置后端需要的传参类型
       "X-Requested-With": "XMLHttpRequest",
