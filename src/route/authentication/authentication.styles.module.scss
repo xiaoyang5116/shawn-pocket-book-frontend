@@ -1,0 +1,40 @@
+$unSelectedColor: #4577a8;
+$selectedColor: #095fb5;
+
+.container {
+  min-height: 100vh;
+  background-image: linear-gradient(217deg, #6fb9f8, #3daaf85e, #49d3fc1a, #3fd3ff00);
+  .head {
+    height: 200px;
+    background: url("//s.yezgea02.com/1616032174786/cryptocurrency.png") no-repeat center;
+    background-size: 120%;
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+  }
+
+  nav ul {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 30px;
+    margin-left: 30px;
+    height: 30px;
+
+    li {
+      font-size: 24px;
+      margin-right: 20px;
+      color: $unSelectedColor;
+    }
+
+    .selected {
+      color: $selectedColor;
+    }
+    .underline {
+      padding-bottom: 5px;
+      border-bottom: 3px solid $selectedColor;
+    }
+  }
+
+  .main {
+    padding: 30px;
+  }
+}

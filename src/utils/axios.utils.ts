@@ -44,7 +44,7 @@ const createAxiosByInterceptors = (
       // 设置后端需要的传参类型
       "X-Requested-With": "XMLHttpRequest",
       "Content-Type": "application/json",
-      token: "your token",
+      // token: "your token",
     },
     ...config, // 自定义配置覆盖基本配置
   });
@@ -56,7 +56,8 @@ const createAxiosByInterceptors = (
       const { loading = true } = config;
       console.log("config:", config);
 
-      config.headers.Authorization = localStorage.get("accessToken") || "";
+      config.headers.Authorization =
+        window.localStorage.getItem("accessToken") || "";
 
       if (loading) addLoading();
       return config;
