@@ -6,6 +6,7 @@ import NoMatch from "./route/no-match/no-match.component";
 import Authentication from "./route/authentication/authentication.component";
 import { useToken } from "./stores/token.store";
 import { useEffect } from "react";
+import Bill from "./route/bill/bill.component";
 
 function App() {
   const token = useToken();
@@ -15,7 +16,7 @@ function App() {
     if (!token) {
       navigate("/auth");
     }
-  }, []);
+  }, [token, navigate]);
 
   return (
     <>
@@ -24,7 +25,7 @@ function App() {
       </div>
       <Routes>
         <Route path="/" element={<Navigation />}>
-          <Route index element={<div>账单</div>} />
+          <Route index element={<Bill />} />
           <Route path="statistics" element={<div>统计</div>} />
           <Route path="user" element={<div>我的</div>} />
         </Route>

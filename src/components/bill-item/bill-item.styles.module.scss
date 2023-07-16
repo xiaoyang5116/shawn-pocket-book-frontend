@@ -1,0 +1,76 @@
+.billContainer {
+  border: 1px solid #f0eded;
+  border-radius: 8px;
+  overflow: hidden;
+
+  .dayContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 12px;
+    background-color: #f1f1f1;
+
+    .date {
+      font-size: 14px;
+    }
+    .ExpenseContainer {
+      display: flex;
+      flex: 1;
+      justify-content: flex-end;
+      align-items: center;
+      margin-left: 12px;
+      span {
+        font-size: 14px;
+      }
+      .dayIncome {
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .billItem {
+    background-color: #fff;
+    padding: 20px 0px 0px 12px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    border-bottom: 1px solid #d2d2d2;
+
+    :global {
+      .antd-mobile-icon {
+        font-size: 40px;
+      }
+    }
+
+    .content {
+      margin-left: 12px;
+      flex: 1;
+
+      .amountContainer {
+        display: flex;
+        justify-content: space-between;
+        margin-right: 12px;
+
+        span {
+          font-size: 16px;
+        }
+
+        .amount_0,
+        .amount_1,
+        .amount_2 {
+          font-weight: bold;
+        }
+        .amount_2 {
+          color: #e3b24c;
+        }
+      }
+
+      .time {
+        font-size: 12px;
+        color: #959494;
+        padding-top: 5px;
+        padding-bottom: 12px;
+      }
+    }
+  }
+}

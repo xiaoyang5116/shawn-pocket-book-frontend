@@ -1,0 +1,55 @@
+$bg: #1677ff;
+$color: #fff;
+$titleColor: #fff;
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .header {
+    height: 90px;
+    width: 100%;
+    background-color: $bg;
+    // position: fixed;
+    position: relative;
+
+    span {
+      color: $color;
+      font-size: 15px;
+    }
+
+    .pay_type {
+      margin-left: 12px;
+      padding-top: 12px;
+      .income {
+        margin-left: 20px;
+      }
+      .price {
+        font-size: 20px;
+        margin-left: 5px;
+      }
+    }
+
+    .type {
+      position: absolute;
+      right: 12px;
+      bottom: 12px;
+
+      .tag,
+      .time {
+        padding: 5px 12px;
+        border-radius: 20px;
+        background-color: rgba($color: #000000, $alpha: 0.1);
+      }
+
+      .time {
+        margin-left: 12px;
+      }
+    }
+  }
+
+  .main {
+    height: 100%;
+  }
+}
