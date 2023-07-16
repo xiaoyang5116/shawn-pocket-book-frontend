@@ -1,32 +1,59 @@
 import { useEffect, useRef, useState } from "react";
-import { InfiniteScroll, List, Result } from "antd-mobile";
+import { InfiniteScroll, List, Result, PullToRefresh } from "antd-mobile";
 import { DownOutline, SmileOutline } from "antd-mobile-icons";
+import { PullStatus } from "antd-mobile/es/components/pull-to-refresh";
 import BillItem from "../../components/bill-item/bill-item.component";
-import { useBills, useGetDefaultBills } from "../../stores/bills.store";
+import {
+  useBills,
+  useGetDefaultBills,
+  usePullUpLoading,
+  useTotalExpense,
+  useTotalIncome,
+  useTotalPage,
+} from "../../stores/bills.store";
+import dayjs from "dayjs";
 
 import styles from "./bill.styles.module.scss";
-import dayjs from "dayjs";
+
+const statusRecord: Record<PullStatus, string> = {
+  pulling: "用力拉",
+  canRelease: "松开吧",
+  refreshing: "玩命加载中...",
+  complete: "好啦",
+};
 
 const Bill = () => {
   const bills = useBills();
-  // const tagId = useBillsTagId();
-  // const billsTime = useBillsTime();
-  // const pullLoading = useBillsPullLoading();
-  const getDefaultBills = useGetDefaultBills();
+  const totalExpense = useTotalExpense();
+  const totalIncome = useTotalIncome();
+  const totalPage = useTotalPage();
   const page = useRef(1);
+  const [currentTime, setCurrentTime] = useState<string>(
+    dayjs().format("YYYY-MM")
+  );
+  const [currentTagId, setCurrentTagId] = useState<number | "all">("all");
   const [hasMore, setHasMore] = useState(true);
 
-  const { list, totalExpense, totalIncome, totalPage } = bills;
+  const getDefaultBills = useGetDefaultBills();
+  const pullUpLoading = usePullUpLoading();
+  const pullDownRefresh = async () => {
+    getDefaultBills({ date: currentTime, tagId: currentTagId });
+    page.current = 1;
+    setHasMore(true);
+  };
 
   useEffect(() => {
-    const currentTime = dayjs().format("YYYY-MM");
-    getDefaultBills(currentTime);
-  }, [getDefaultBills]);
+    getDefaultBills({ date: currentTime, tagId: currentTagId });
+  }, [getDefaultBills, currentTime, currentTagId]);
 
   async function loadMore() {
     if (totalPage > page.current) {
       page.current += 1;
-      // pullLoading(page.current);
+      pullUpLoading({
+        date: currentTime,
+        tagId: currentTagId,
+        page: page.current,
+      });
     } else {
       setHasMore(false);
     }
@@ -59,25 +86,32 @@ const Bill = () => {
         </div>
       </div>
       <div className={styles.main}>
-        {list.length > 0 ? (
-          <>
-            <List>
-              {list.map((bill) => (
-                <List.Item key={bill.date}>
-                  <BillItem bill={bill} />
-                </List.Item>
-              ))}
-            </List>
-            <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
-          </>
-        ) : (
-          <Result
-            icon={<SmileOutline />}
-            status="success"
-            title="欢迎来到 shawn 记账本"
-            description="目前还没有账单，来记一笔吧！"
-          />
-        )}
+        <PullToRefresh
+          onRefresh={pullDownRefresh}
+          renderText={(status) => {
+            return <div>{statusRecord[status]}</div>;
+          }}
+        >
+          {bills.length > 0 ? (
+            <>
+              <List>
+                {bills.map((bill) => (
+                  <List.Item key={bill.date}>
+                    <BillItem bill={bill} />
+                  </List.Item>
+                ))}
+              </List>
+              <InfiniteScroll loadMore={loadMore} hasMore={hasMore} />
+            </>
+          ) : (
+            <Result
+              icon={<SmileOutline />}
+              status="success"
+              title="欢迎来到 shawn 记账本"
+              description="目前还没有账单，来记一笔吧！"
+            />
+          )}
+        </PullToRefresh>
       </div>
     </div>
   );

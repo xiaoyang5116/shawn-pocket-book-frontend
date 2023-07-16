@@ -31,35 +31,58 @@ export type BillsType = {
   date: string;
 };
 
-export type BillsListType = BillsType[];
-
-export type BillsStoreType = {
-  bills: {
-    list: BillsListType;
-    totalExpense: number;
-    totalIncome: number;
-    totalPage: number;
-  };
-  getDefaultBills: (date: string) => void;
+type ListType = {
+  list: BillsType[];
+  totalExpense: number;
+  totalIncome: number;
+  totalPage: number;
 };
 
-const initBills: BillsStoreType["bills"] = {
+export type BillsStoreType = {
+  list: BillsType[];
+  totalExpense: number;
+  totalIncome: number;
+  totalPage: number;
+  getDefaultBills: (query: { date: string; tagId: number | "all" }) => void;
+  pullUpLoading: (query: {
+    date: string;
+    tagId: number | "all";
+    page: number;
+  }) => void;
+};
+
+export const useBillsStore = create<BillsStoreType>((set, get) => ({
   list: [],
   totalExpense: 0,
   totalIncome: 0,
   totalPage: 1,
-};
-
-export const useBillsStore = create<BillsStoreType>((set) => ({
-  bills: initBills,
-  getDefaultBills: async (date) => {
-    const result: BillsStoreType["bills"] = await request.get("/bill/list", {
-      params: { date: date },
+  getDefaultBills: async (query) => {
+    const result: ListType = await request.get("/bill/list", {
+      params: query,
     });
-    set({ bills: result });
+    if (result) {
+      set({ ...result });
+    }
+  },
+  pullUpLoading: async (query) => {
+    const result: ListType = await request.get("/bill/list", {
+      params: query,
+    });
+    if (result.list.length > 0) {
+      set({ list: get().list.concat(result.list) });
+    }
   },
 }));
 
-export const useBills = () => useBillsStore((state) => state.bills);
+export const useBills = () => useBillsStore((state) => state.list);
+export const useTotalPage = () => useBillsStore((state) => state.totalPage);
+export const useTotalExpense = () =>
+  useBillsStore((state) => state.totalExpense);
+export const useTotalIncome = () => useBillsStore((state) => state.totalIncome);
+
 export const useGetDefaultBills = () =>
   useBillsStore((state) => state.getDefaultBills);
+
+// 上拉加载
+export const usePullUpLoading = () =>
+  useBillsStore((state) => state.pullUpLoading);
