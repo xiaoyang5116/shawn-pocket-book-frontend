@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { BillType, BillsType, Pay_Type } from "../../stores/bills.store";
-import { useNavigate } from "react-router-dom";
 import TagIcon from "../tag-icon/tag-icon.component";
 import dayjs from "dayjs";
 
@@ -28,7 +27,6 @@ const BillItem = ({ bill }: BillItemProps) => {
   const { bills, date } = bill;
   const [dayExpense, setDayExpense] = useState(0); // 天支出
   const [dayIncome, setDayIncome] = useState(0); // 天收入
-  const navigateTo = useNavigate();
 
   useEffect(() => {
     // 初始化将传入的 bill 内的 bills 数组内数据项，过滤出支出和收入。
