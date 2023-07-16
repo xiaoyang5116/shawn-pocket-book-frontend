@@ -1,11 +1,10 @@
 .container {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
 
 .body {
-  height: 100%;
-  // background:#fbfbfb;
-  background-image: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
+  flex: 1;
+  background: #fbfbfb;
 }

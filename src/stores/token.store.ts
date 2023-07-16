@@ -7,12 +7,11 @@ type Token = {
   clearToken: () => void;
 };
 
-const useTokenStore = create<Token>()(
+export const useTokenStore = create<Token>()(
   persist(
     (set) => ({
       accessToken: null,
       setToken: (token: string) => {
-        localStorage.setItem("accessToken", token);
         set({ accessToken: token });
       },
       clearToken: () => {

@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from "axios";
 import { Toast } from "antd-mobile";
 import type { ToastHandler } from "antd-mobile/es/components/toast";
+import { useTokenStore } from "../stores/token.store";
 
 const MODE = import.meta.env.MODE; // 环境变量
 
@@ -55,8 +56,7 @@ const createAxiosByInterceptors = (
       const { loading = true } = config;
       console.log("config:", config);
 
-      config.headers.Authorization =
-        window.localStorage.getItem("accessToken") || "";
+      config.headers.Authorization = useTokenStore.getState().accessToken || "";
 
       if (loading) addLoading();
       return config;

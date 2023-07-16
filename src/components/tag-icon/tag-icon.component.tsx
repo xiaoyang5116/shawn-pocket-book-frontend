@@ -5,12 +5,10 @@ import {
   CalendarOutline,
 } from "antd-mobile-icons";
 
-import styles from "./tag-icon.styles.module.scss";
-
 const TagIcon = ({ id }: { id: number }) => {
   switch (id) {
     case 1:
-      return <GiftOutline className={styles.icon} />;
+      return <GiftOutline />;
     case 2:
       return <ShopbagOutline />;
     case 3:

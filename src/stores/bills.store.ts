@@ -33,12 +33,33 @@ export type BillsType = {
 
 export type BillsListType = BillsType[];
 
-const useBillsStore = create((set) => ({
-  bills: [],
-  getBills: async (query: { date: string; tagId: number }) => {
-    const result = await request.get("/bill/list", {
-      params: query,
+export type BillsStoreType = {
+  bills: {
+    list: BillsListType;
+    totalExpense: number;
+    totalIncome: number;
+    totalPage: number;
+  };
+  getDefaultBills: (date: string) => void;
+};
+
+const initBills: BillsStoreType["bills"] = {
+  list: [],
+  totalExpense: 0,
+  totalIncome: 0,
+  totalPage: 1,
+};
+
+export const useBillsStore = create<BillsStoreType>((set) => ({
+  bills: initBills,
+  getDefaultBills: async (date) => {
+    const result: BillsStoreType["bills"] = await request.get("/bill/list", {
+      params: { date: date },
     });
     set({ bills: result });
   },
 }));
+
+export const useBills = () => useBillsStore((state) => state.bills);
+export const useGetDefaultBills = () =>
+  useBillsStore((state) => state.getDefaultBills);
