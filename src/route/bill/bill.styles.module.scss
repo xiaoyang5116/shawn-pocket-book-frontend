@@ -53,9 +53,11 @@ $titleColor: #fff;
   }
 
   .main {
-    height: 100vh;
-    margin-top: 100px;
-    margin-bottom: 50px;
-    overflow: scroll;
+    position: absolute;
+    top: 90px;
+    height: calc(100vh - 90px - 48px);
+    width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
   }
 }

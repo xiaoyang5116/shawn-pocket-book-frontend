@@ -8,6 +8,10 @@ const MODE = import.meta.env.MODE; // 环境变量
 let loadingInstance: ToastHandler | null = null;
 let requestNum = 0;
 
+const jumpLogin = () => {
+  useTokenStore.getState().clearToken();
+};
+
 // loading...
 const addLoading = () => {
   // 增加loading 如果pending请求数量等于1，弹出loading, 防止重复弹出
@@ -77,10 +81,11 @@ const createAxiosByInterceptors = (
       if (loading) cancelLoading();
 
       const { code, data, message } = response.data;
+      console.log("sss");
 
       if (code === 200) return data;
       else if (code === 401) {
-        // jumpLogin();
+        jumpLogin();
       } else {
         Toast.show({
           content: message,
@@ -101,7 +106,7 @@ const createAxiosByInterceptors = (
 
       if (error.response) {
         if (error.response.status === 401) {
-          // jumpLogin();
+          jumpLogin();
         }
       }
 

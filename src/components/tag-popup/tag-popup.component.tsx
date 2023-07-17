@@ -80,6 +80,7 @@ const TagPopup = forwardRef<TagPopupType>((props, ref) => {
                 <div className={styles.tags}>
                   {item.tags.map((tag) => (
                     <TagButton
+                      key={tag.id}
                       onClick={() => tagIdHandler(tag)}
                       className={
                         currentTag.id === tag.id
