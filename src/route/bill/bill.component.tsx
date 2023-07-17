@@ -5,6 +5,7 @@ import { PullStatus } from "antd-mobile/es/components/pull-to-refresh";
 import BillItem from "../../components/bill-item/bill-item.component";
 import {
   useBills,
+  useCurrentTime,
   useGetDefaultBills,
   usePullUpLoading,
   useTotalExpense,
@@ -16,6 +17,9 @@ import TagPopup, {
   TagPopupType,
 } from "../../components/tag-popup/tag-popup.component";
 import { useCurrentTag } from "../../stores/tag.store";
+import DatePickerPopup, {
+  DatePickerPopupType,
+} from "../../components/date-picker-popup/date-picker-popup.component";
 
 import styles from "./bill.styles.module.scss";
 
@@ -32,9 +36,10 @@ const Bill = () => {
   const totalIncome = useTotalIncome();
   const totalPage = useTotalPage();
   const currentTag = useCurrentTag();
+  const currentTime = useCurrentTime();
   const page = useRef(1);
   const tagPopupRef = useRef<TagPopupType>(null);
-  const [currentTime] = useState<string>(dayjs().format("YYYY-MM"));
+  const DatePickerPopupRef = useRef<DatePickerPopupType>(null);
   const [hasMore, setHasMore] = useState(true);
 
   const getDefaultBills = useGetDefaultBills();
@@ -63,6 +68,8 @@ const Bill = () => {
   }
 
   const tagPopupShow = () => tagPopupRef.current?.tapPopupShow();
+  const datePickerPopupShow = () =>
+    DatePickerPopupRef.current?.DatePickerPopupShow();
 
   return (
     <div className={styles.container}>
@@ -84,8 +91,8 @@ const Bill = () => {
             {currentTag.name}
             <DownOutline className={styles.icon} />
           </span>
-          <span className={styles.time}>
-            {`2023-07`}
+          <span className={styles.time} onClick={datePickerPopupShow}>
+            {currentTime}
             <DownOutline className={styles.icon} />
           </span>
         </div>
@@ -119,6 +126,7 @@ const Bill = () => {
         </PullToRefresh>
       </div>
       <TagPopup ref={tagPopupRef} />
+      <DatePickerPopup ref={DatePickerPopupRef} />
     </div>
   );
 };

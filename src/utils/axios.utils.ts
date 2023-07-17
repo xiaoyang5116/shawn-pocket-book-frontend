@@ -59,8 +59,17 @@ const createAxiosByInterceptors = (
       // 在发送请求之前做些什么
       const { loading = true } = config;
       console.log("config:", config);
+      const token = useTokenStore.getState().accessToken || "";
 
-      config.headers.Authorization = useTokenStore.getState().accessToken || "";
+      if (
+        config.url !== "/user/login" &&
+        config.url !== "/user/register" &&
+        !token
+      ) {
+        return Promise.reject();
+      }
+
+      config.headers.Authorization = token;
 
       if (loading) addLoading();
       return config;
@@ -81,7 +90,6 @@ const createAxiosByInterceptors = (
       if (loading) cancelLoading();
 
       const { code, data, message } = response.data;
-      console.log("sss");
 
       if (code === 200) return data;
       else if (code === 401) {

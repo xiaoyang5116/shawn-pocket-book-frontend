@@ -1,5 +1,7 @@
 import { create } from "zustand";
 import { request } from "../utils/axios.utils";
+import dayjs from "dayjs";
+import { persist } from "zustand/middleware";
 
 export enum Pay_Type {
   "不计入" = 0,
@@ -43,12 +45,14 @@ export type BillsStoreType = {
   totalExpense: number;
   totalIncome: number;
   totalPage: number;
+  time: string;
   getDefaultBills: (query: { date: string; tagId: number | "all" }) => void;
   pullUpLoading: (query: {
     date: string;
     tagId: number | "all";
     page: number;
   }) => void;
+  setTime: (time: string) => void;
 };
 
 export const useBillsStore = create<BillsStoreType>((set, get) => ({
@@ -56,6 +60,7 @@ export const useBillsStore = create<BillsStoreType>((set, get) => ({
   totalExpense: 0,
   totalIncome: 0,
   totalPage: 1,
+  time: dayjs().format("YYYY-MM"),
   getDefaultBills: async (query) => {
     const result: ListType = await request.get("/bill/list", {
       params: query,
@@ -72,6 +77,7 @@ export const useBillsStore = create<BillsStoreType>((set, get) => ({
       set({ list: get().list.concat(result.list) });
     }
   },
+  setTime: (time: string) => set({ time: time }),
 }));
 
 export const useBills = () => useBillsStore((state) => state.list);
@@ -86,3 +92,6 @@ export const useGetDefaultBills = () =>
 // 上拉加载
 export const usePullUpLoading = () =>
   useBillsStore((state) => state.pullUpLoading);
+
+export const useCurrentTime = () => useBillsStore((state) => state.time);
+export const useSetTime = () => useBillsStore((state) => state.setTime);
