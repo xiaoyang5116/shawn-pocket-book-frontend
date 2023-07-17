@@ -12,6 +12,10 @@ import {
   useTotalPage,
 } from "../../stores/bills.store";
 import dayjs from "dayjs";
+import TagPopup, {
+  TagPopupType,
+} from "../../components/tag-popup/tag-popup.component";
+import { useCurrentTag } from "../../stores/tag.store";
 
 import styles from "./bill.styles.module.scss";
 
@@ -27,37 +31,38 @@ const Bill = () => {
   const totalExpense = useTotalExpense();
   const totalIncome = useTotalIncome();
   const totalPage = useTotalPage();
+  const currentTag = useCurrentTag();
   const page = useRef(1);
-  const [currentTime, setCurrentTime] = useState<string>(
-    dayjs().format("YYYY-MM")
-  );
-  const [currentTagId, setCurrentTagId] = useState<number | "all">("all");
+  const tagPopupRef = useRef<TagPopupType>(null);
+  const [currentTime] = useState<string>(dayjs().format("YYYY-MM"));
   const [hasMore, setHasMore] = useState(true);
 
   const getDefaultBills = useGetDefaultBills();
   const pullUpLoading = usePullUpLoading();
   const pullDownRefresh = async () => {
-    getDefaultBills({ date: currentTime, tagId: currentTagId });
+    getDefaultBills({ date: currentTime, tagId: currentTag.id });
     page.current = 1;
     setHasMore(true);
   };
 
   useEffect(() => {
-    getDefaultBills({ date: currentTime, tagId: currentTagId });
-  }, [getDefaultBills, currentTime, currentTagId]);
+    getDefaultBills({ date: currentTime, tagId: currentTag.id });
+  }, [getDefaultBills, currentTime, currentTag]);
 
   async function loadMore() {
     if (totalPage > page.current) {
       page.current += 1;
       pullUpLoading({
         date: currentTime,
-        tagId: currentTagId,
+        tagId: currentTag.id,
         page: page.current,
       });
     } else {
       setHasMore(false);
     }
   }
+
+  const tagPopupShow = () => tagPopupRef.current?.tapPopupShow();
 
   return (
     <div className={styles.container}>
@@ -75,13 +80,13 @@ const Bill = () => {
           </span>
         </div>
         <div className={styles.type}>
-          <span className={styles.tag}>
-            {`全部类型`}
-            <DownOutline />
+          <span className={styles.tag} onClick={tagPopupShow}>
+            {currentTag.name}
+            <DownOutline className={styles.icon} />
           </span>
           <span className={styles.time}>
             {`2023-07`}
-            <DownOutline />
+            <DownOutline className={styles.icon} />
           </span>
         </div>
       </div>
@@ -113,6 +118,7 @@ const Bill = () => {
           )}
         </PullToRefresh>
       </div>
+      <TagPopup ref={tagPopupRef} />
     </div>
   );
 };
