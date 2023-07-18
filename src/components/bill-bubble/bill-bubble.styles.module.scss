@@ -1,0 +1,10 @@
+.bubble {
+  --initial-position-bottom: 80px;
+  --initial-position-right: 24px;
+  --edge-distance: 24px;
+  :global {
+    .antd-mobile-icon {
+      font-size: 30px;
+    }
+  }
+}

@@ -6,13 +6,13 @@ import BillItem from "../../components/bill-item/bill-item.component";
 import {
   useBills,
   useCurrentTime,
+  useSetTime,
   useGetDefaultBills,
   usePullUpLoading,
   useTotalExpense,
   useTotalIncome,
   useTotalPage,
 } from "../../stores/bills.store";
-import dayjs from "dayjs";
 import TagPopup, {
   TagPopupType,
 } from "../../components/tag-popup/tag-popup.component";
@@ -22,6 +22,10 @@ import DatePickerPopup, {
 } from "../../components/date-picker-popup/date-picker-popup.component";
 
 import styles from "./bill.styles.module.scss";
+import BillBubble from "../../components/bill-bubble/bill-bubble.component";
+import BillAddPopup, {
+  BillAddPopupType,
+} from "../../components/bill-add-popup/bill-add-popup.component";
 
 const statusRecord: Record<PullStatus, string> = {
   pulling: "用力拉",
@@ -37,9 +41,11 @@ const Bill = () => {
   const totalPage = useTotalPage();
   const currentTag = useCurrentTag();
   const currentTime = useCurrentTime();
+  const setTime = useSetTime();
   const page = useRef(1);
   const tagPopupRef = useRef<TagPopupType>(null);
-  const DatePickerPopupRef = useRef<DatePickerPopupType>(null);
+  const datePickerPopupRef = useRef<DatePickerPopupType>(null);
+  const billAddPopupRef = useRef<BillAddPopupType>(null);
   const [hasMore, setHasMore] = useState(true);
 
   const getDefaultBills = useGetDefaultBills();
@@ -49,6 +55,8 @@ const Bill = () => {
     page.current = 1;
     setHasMore(true);
   };
+
+  // const setTimeHandler = (time: string) => setTime(time);
 
   useEffect(() => {
     getDefaultBills({ date: currentTime, tagId: currentTag.id });
@@ -68,8 +76,8 @@ const Bill = () => {
   }
 
   const tagPopupShow = () => tagPopupRef.current?.tapPopupShow();
-  const datePickerPopupShow = () =>
-    DatePickerPopupRef.current?.DatePickerPopupShow();
+  const datePickerPopupShow = () => datePickerPopupRef.current?.show();
+  const billAddPopupShow = () => billAddPopupRef.current?.billAddPopupShow();
 
   return (
     <div className={styles.container}>
@@ -126,7 +134,14 @@ const Bill = () => {
         </PullToRefresh>
       </div>
       <TagPopup ref={tagPopupRef} />
-      <DatePickerPopup ref={DatePickerPopupRef} />
+      <DatePickerPopup
+        ref={datePickerPopupRef}
+        setTime={setTime}
+        format={"YYYY-MM"}
+        columnType={["year", "month"]}
+      />
+      <BillAddPopup ref={billAddPopupRef} />
+      <BillBubble onClick={billAddPopupShow} />
     </div>
   );
 };

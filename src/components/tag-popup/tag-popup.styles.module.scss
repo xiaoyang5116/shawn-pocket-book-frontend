@@ -40,7 +40,6 @@
       }
     }
     .tags {
-      // display: flex;
       display: grid;
       flex-flow: row wrap;
       grid-template-columns: repeat(3, 1fr);

@@ -1,0 +1,124 @@
+.container {
+  height: 60vh;
+  padding: 0 12px;
+  .closeIconContainer {
+    display: flex;
+    justify-content: flex-end;
+    margin: 18px 0 18px 0;
+    .closeIcon {
+      font-size: 26px;
+    }
+  }
+
+  .typeContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .pay_typeContainer {
+      .pay_type,
+      .pay_type_active {
+        margin-right: 12px;
+        padding: 4px 12px;
+        border-radius: 4px;
+        font-size: 14px;
+      }
+      .pay_type {
+        background-color: #f1f1f1;
+        border: 1px solid #f1f1f1;
+        color: #8f8d8d;
+      }
+      .pay_type_active {
+        background-color: #f2fdfa;
+        border: 1px solid #1677ff;
+        color: #1677ff;
+      }
+    }
+
+    .timeContainer {
+      font-size: 15px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      border: 1px solid #f1f1f1;
+      background-color: #f1f1f1;
+
+      .icon {
+        margin-left: 8px;
+      }
+    }
+  }
+
+  .amountContainer {
+    margin-top: 20px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #dbdbdb;
+    display: flex;
+    justify-content: flex-start;
+    .amountIcon {
+      font-size: 28px;
+      margin-right: 12px;
+    }
+
+    .input {
+      font-size: 30px;
+      width: 100%;
+      // border-bottom: 1px solid #000;
+    }
+  }
+
+  .tagContainer {
+    // height: 50px;
+    margin-top: 12px;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    row-gap: 12px;
+    column-gap: 12px;
+    align-items: center;
+
+    .tag,
+    .tag_active {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      :global {
+        .antd-mobile-icon {
+          font-size: 35px;
+          padding: 6px;
+          background-color: #f0f0f0;
+          border-radius: 20px;
+          color: #979696;
+        }
+      }
+      span {
+        margin-top: 5px;
+        font-size: 12px;
+      }
+    }
+
+    .tag {
+      :global {
+        .antd-mobile-icon {
+          background-color: #f0f0f0;
+          color: #979696;
+        }
+      }
+      span {
+        color: #868585;
+      }
+    }
+
+    .tag_active {
+      :global {
+        .antd-mobile-icon {
+          background-color: #1677ff;
+          color: #fff;
+        }
+      }
+      span {
+        color: #000;
+      }
+    }
+  }
+}

@@ -1,35 +1,65 @@
 import dayjs from "dayjs";
 import { forwardRef, useState, useImperativeHandle } from "react";
 import { DatePicker } from "zarm";
-import { useSetTime } from "../../stores/bills.store";
 
 export type DatePickerPopupType = {
-  DatePickerPopupShow: () => void;
+  show: () => void;
+  close: () => void;
 };
 
-const DatePickerPopup = forwardRef<DatePickerPopupType>((props, ref) => {
-  const [visible, setVisible] = useState(false);
-  const setTime = useSetTime();
+type DatePickerProps = {
+  setTime: (item: string) => void;
+  format: "YYYY-MM" | "MM-DD";
+  closeCallback?: () => void;
+  columnType: (
+    | "year"
+    | "month"
+    | "day"
+    | "meridiem"
+    | "hour"
+    | "minute"
+    | "second"
+    | "week"
+    | "week-day"
+  )[];
+};
 
-  useImperativeHandle(ref, () => {
-    return {
-      DatePickerPopupShow: () => setVisible(true),
+const DatePickerPopup = forwardRef<DatePickerPopupType, DatePickerProps>(
+  ({ setTime, columnType, format, closeCallback }, ref) => {
+    const [visible, setVisible] = useState(false);
+
+    const closeHandler = () => {
+      setVisible(false);
+      if (closeCallback) {
+        closeCallback();
+      }
     };
-  });
 
-  return (
-    <DatePicker
-      {...props}
-      visible={visible}
-      columnType={["year", "month"]}
-      onConfirm={(value) => {
-        const time = dayjs(value).format("YYYY-MM");
-        setTime(time);
-        setVisible(false);
-      }}
-      onCancel={() => setVisible(false)}
-    />
-  );
-});
+    useImperativeHandle(ref, () => {
+      return {
+        show: () => setVisible(true),
+        close: () => {
+          setVisible(false);
+          if (closeCallback) {
+            closeCallback();
+          }
+        },
+      };
+    });
+
+    return (
+      <DatePicker
+        visible={visible}
+        columnType={columnType}
+        onConfirm={(value) => {
+          const time = dayjs(value).format(format);
+          setTime(time);
+          closeHandler();
+        }}
+        onCancel={closeHandler}
+      />
+    );
+  }
+);
 
 export default DatePickerPopup;

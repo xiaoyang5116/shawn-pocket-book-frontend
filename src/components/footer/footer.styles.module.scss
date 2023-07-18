@@ -3,4 +3,19 @@
   bottom: 0;
   width: 100%;
   border-top: 1px solid #d3d3d3;
+
+  :global {
+    .adm-tab-bar-wrap {
+      height: 58px;
+    }
+    .antd-mobile-icon {
+      font-size: 28px;
+    }
+    .adm-tab-bar-item-title {
+      font-size: 14px;
+    }
+    .adm-tab-bar-item-title-with-icon {
+      margin-top: 8px;
+    }
+  }
 }
