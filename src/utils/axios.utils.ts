@@ -58,7 +58,7 @@ const createAxiosByInterceptors = (
     function (config: any) {
       // 在发送请求之前做些什么
       const { loading = true } = config;
-      console.log("config:", config);
+      // console.log("config:", config);
       const token = useTokenStore.getState().accessToken || "";
 
       if (
@@ -84,7 +84,7 @@ const createAxiosByInterceptors = (
   instance.interceptors.response.use(
     function (response: any) {
       // 对响应数据做点什么
-      console.log("response:", response);
+      // console.log("response:", response);
 
       const { loading = true } = response.config;
       if (loading) cancelLoading();

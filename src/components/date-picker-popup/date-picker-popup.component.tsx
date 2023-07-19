@@ -1,4 +1,3 @@
-import dayjs from "dayjs";
 import { forwardRef, useState, useImperativeHandle } from "react";
 import { DatePicker } from "zarm";
 
@@ -9,7 +8,6 @@ export type DatePickerPopupType = {
 
 type DatePickerProps = {
   setTime: (item: string) => void;
-  format: "YYYY-MM" | "MM-DD";
   closeCallback?: () => void;
   columnType: (
     | "year"
@@ -25,7 +23,7 @@ type DatePickerProps = {
 };
 
 const DatePickerPopup = forwardRef<DatePickerPopupType, DatePickerProps>(
-  ({ setTime, columnType, format, closeCallback }, ref) => {
+  ({ setTime, columnType, closeCallback }, ref) => {
     const [visible, setVisible] = useState(false);
 
     const closeHandler = () => {
@@ -52,8 +50,7 @@ const DatePickerPopup = forwardRef<DatePickerPopupType, DatePickerProps>(
         visible={visible}
         columnType={columnType}
         onConfirm={(value) => {
-          const time = dayjs(value).format(format);
-          setTime(time);
+          setTime(value.toLocaleString());
           closeHandler();
         }}
         onCancel={closeHandler}

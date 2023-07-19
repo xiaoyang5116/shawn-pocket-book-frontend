@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { InfiniteScroll, List, Result, PullToRefresh } from "antd-mobile";
 import { DownOutline, SmileOutline } from "antd-mobile-icons";
 import { PullStatus } from "antd-mobile/es/components/pull-to-refresh";
@@ -20,12 +20,13 @@ import { useCurrentTag } from "../../stores/tag.store";
 import DatePickerPopup, {
   DatePickerPopupType,
 } from "../../components/date-picker-popup/date-picker-popup.component";
-
-import styles from "./bill.styles.module.scss";
 import BillBubble from "../../components/bill-bubble/bill-bubble.component";
 import BillAddPopup, {
   BillAddPopupType,
 } from "../../components/bill-add-popup/bill-add-popup.component";
+import dayjs from "dayjs";
+
+import styles from "./bill.styles.module.scss";
 
 const statusRecord: Record<PullStatus, string> = {
   pulling: "用力拉",
@@ -48,24 +49,30 @@ const Bill = () => {
   const billAddPopupRef = useRef<BillAddPopupType>(null);
   const [hasMore, setHasMore] = useState(true);
 
+  const formatTime = dayjs(currentTime).format("YYYY-MM");
+
   const getDefaultBills = useGetDefaultBills();
   const pullUpLoading = usePullUpLoading();
+
+  const refreshHandler = useCallback(() => {
+    getDefaultBills({ date: formatTime, tagId: currentTag.id });
+  }, [getDefaultBills, formatTime, currentTag]);
+
   const pullDownRefresh = async () => {
-    getDefaultBills({ date: currentTime, tagId: currentTag.id });
+    refreshHandler();
     page.current = 1;
     setHasMore(true);
   };
 
-
   useEffect(() => {
-    getDefaultBills({ date: currentTime, tagId: currentTag.id });
-  }, [getDefaultBills, currentTime, currentTag]);
+    refreshHandler();
+  }, [refreshHandler]);
 
   async function loadMore() {
     if (totalPage > page.current) {
       page.current += 1;
       pullUpLoading({
-        date: currentTime,
+        date: formatTime,
         tagId: currentTag.id,
         page: page.current,
       });
@@ -99,7 +106,7 @@ const Bill = () => {
             <DownOutline className={styles.icon} />
           </span>
           <span className={styles.time} onClick={datePickerPopupShow}>
-            {currentTime}
+            {formatTime}
             <DownOutline className={styles.icon} />
           </span>
         </div>
@@ -114,8 +121,8 @@ const Bill = () => {
           {bills.length > 0 ? (
             <>
               <List>
-                {bills.map((bill) => (
-                  <List.Item key={bill.date}>
+                {bills.map((bill, index) => (
+                  <List.Item key={bill.date + index}>
                     <BillItem bill={bill} />
                   </List.Item>
                 ))}
@@ -136,11 +143,10 @@ const Bill = () => {
       <DatePickerPopup
         ref={datePickerPopupRef}
         setTime={setTime}
-        format={"YYYY-MM"}
         columnType={["year", "month"]}
       />
-      <BillAddPopup ref={billAddPopupRef} />
       <BillBubble onClick={billAddPopupShow} />
+      <BillAddPopup ref={billAddPopupRef} refreshHandler={refreshHandler} />
     </div>
   );
 };

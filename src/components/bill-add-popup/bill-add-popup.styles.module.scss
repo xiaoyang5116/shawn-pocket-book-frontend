@@ -1,6 +1,5 @@
 .container {
-  height: 60vh;
-  padding: 0 12px;
+  padding: 0 12px 190px 12px;
   .closeIconContainer {
     display: flex;
     justify-content: flex-end;
@@ -62,13 +61,12 @@
     .input {
       font-size: 30px;
       width: 100%;
-      // border-bottom: 1px solid #000;
+      height: 30px;
     }
   }
 
   .tagContainer {
-    // height: 50px;
-    margin-top: 12px;
+    margin-top: 14px;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     row-gap: 12px;
@@ -119,6 +117,18 @@
       span {
         color: #000;
       }
+    }
+  }
+
+  .remarkContainer {
+    margin: 16px 0;
+    .text {
+      border: 1px solid #dbdbdb;
+      padding: 8px 12px;
+    }
+    span {
+      font-size: 14px;
+      color: #1677ff;
     }
   }
 }

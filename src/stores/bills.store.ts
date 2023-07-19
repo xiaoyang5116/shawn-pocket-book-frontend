@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { request } from "../utils/axios.utils";
 import dayjs from "dayjs";
+import { Toast } from "antd-mobile";
 
 export enum Pay_Type {
   "不计入" = 0,
@@ -39,6 +40,13 @@ type ListType = {
   totalPage: number;
 };
 
+type AddBillType = {
+  amount: number;
+  createTime: string;
+  remark: string;
+  tagId: number;
+};
+
 export type BillsStoreType = {
   list: BillsType[];
   totalExpense: number;
@@ -52,6 +60,7 @@ export type BillsStoreType = {
     page: number;
   }) => void;
   setTime: (time: string) => void;
+  addBill: (param: AddBillType) => Promise<void>;
 };
 
 export const useBillsStore = create<BillsStoreType>((set, get) => ({
@@ -59,7 +68,7 @@ export const useBillsStore = create<BillsStoreType>((set, get) => ({
   totalExpense: 0,
   totalIncome: 0,
   totalPage: 1,
-  time: dayjs().format("YYYY-MM"),
+  time: dayjs().toDate().toString(),
   getDefaultBills: async (query) => {
     const result: ListType = await request.get("/bill/list", {
       params: query,
@@ -77,6 +86,13 @@ export const useBillsStore = create<BillsStoreType>((set, get) => ({
     }
   },
   setTime: (time: string) => set({ time: time }),
+  addBill: async (param) => {
+    await request
+      .post("/bill/add", param)
+      .then(() =>
+        Toast.show({ icon: "success", content: "已记一笔", position: "bottom" })
+      );
+  },
 }));
 
 export const useBills = () => useBillsStore((state) => state.list);
@@ -94,3 +110,5 @@ export const usePullUpLoading = () =>
 
 export const useCurrentTime = () => useBillsStore((state) => state.time);
 export const useSetTime = () => useBillsStore((state) => state.setTime);
+
+export const useAddBill = () => useBillsStore((state) => state.addBill);
