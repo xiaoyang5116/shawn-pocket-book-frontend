@@ -13,7 +13,7 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (!token) {
+    if (!token && location.pathname !== "/auth") {
       navigate("/auth");
     }
   }, [token, navigate]);
