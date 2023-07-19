@@ -56,7 +56,6 @@ const Bill = () => {
     setHasMore(true);
   };
 
-  // const setTimeHandler = (time: string) => setTime(time);
 
   useEffect(() => {
     getDefaultBills({ date: currentTime, tagId: currentTag.id });

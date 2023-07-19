@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { request } from "../utils/axios.utils";
 import dayjs from "dayjs";
-import { persist } from "zustand/middleware";
 
 export enum Pay_Type {
   "不计入" = 0,
