@@ -75,7 +75,7 @@ const BillItem = ({ bill }: BillItemProps) => {
                   <Amount item={item} />
                 </div>
                 <div className={styles.time}>
-                  <span>{dayjs(createTime).format("hh:mm")}</span>
+                  <span>{dayjs(createTime).format("HH:mm")}</span>
                   {remark ? <span>{` ｜ ${remark}`}</span> : null}
                 </div>
               </div>

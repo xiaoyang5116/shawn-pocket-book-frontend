@@ -212,7 +212,7 @@ const BillAddPopup = forwardRef<BillAddPopupType, BillAddPopupProps>(
         <DatePickerPopup
           ref={datePickerPopupRef}
           setTime={setTime}
-          columnType={["month", "day"]}
+          columnType={["year", "month", "day"]}
           closeCallback={() => setKeyboardIsShow(true)}
         />
       </Popup>
