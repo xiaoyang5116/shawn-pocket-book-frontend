@@ -61,6 +61,8 @@ export type BillsStoreType = {
   }) => void;
   setTime: (time: string) => void;
   addBill: (param: AddBillType) => Promise<void>;
+  billDetail: (id: number) => Promise<BillType>;
+  deleteBill: (id: number) => Promise<void>;
 };
 
 export const useBillsStore = create<BillsStoreType>((set, get) => ({
@@ -93,6 +95,12 @@ export const useBillsStore = create<BillsStoreType>((set, get) => ({
         Toast.show({ icon: "success", content: "已记一笔", position: "bottom" })
       );
   },
+  billDetail: async (id) => {
+    return await request.get(`/bill/detail/${id}`);
+  },
+  deleteBill: async (id) => {
+    return await request.delete(`/bill/${id}`);
+  },
 }));
 
 export const useBills = () => useBillsStore((state) => state.list);
@@ -112,3 +120,8 @@ export const useCurrentTime = () => useBillsStore((state) => state.time);
 export const useSetTime = () => useBillsStore((state) => state.setTime);
 
 export const useAddBill = () => useBillsStore((state) => state.addBill);
+
+export const useGetBillDetail = () =>
+  useBillsStore((state) => state.billDetail);
+
+export const useDeleteBill = () => useBillsStore((state) => state.deleteBill);

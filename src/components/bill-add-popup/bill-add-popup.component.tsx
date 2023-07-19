@@ -16,7 +16,7 @@ export type BillAddPopupType = {
 };
 
 type BillAddPopupProps = {
-  refreshHandler: () => void;
+  refreshHandler?: () => void;
 };
 
 const BillAddPopup = forwardRef<BillAddPopupType, BillAddPopupProps>(
@@ -101,7 +101,9 @@ const BillAddPopup = forwardRef<BillAddPopupType, BillAddPopupProps>(
           tagId: tas.find((item) => item.pay_type === pay_type)?.tags[tagsIndex]
             .id as number,
         }).then(() => {
-          refreshHandler();
+          if (refreshHandler) {
+            refreshHandler();
+          }
         });
         setTagsIndex(0);
         setPay_type(1);

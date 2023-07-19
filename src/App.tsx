@@ -6,6 +6,7 @@ import Authentication from "./route/authentication/authentication.component";
 import { useToken } from "./stores/token.store";
 import { useEffect } from "react";
 import Bill from "./route/bill/bill.component";
+import BillDetail from "./route/bill-detail/bill-detail.component";
 
 function App() {
   const token = useToken();
@@ -28,6 +29,7 @@ function App() {
           <Route path="statistics" element={<div>统计</div>} />
           <Route path="user" element={<div>我的</div>} />
         </Route>
+        <Route path="/detail/:id" element={<BillDetail />} />
         <Route path="/auth" element={<Authentication />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>
