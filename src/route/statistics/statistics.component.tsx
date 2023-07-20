@@ -8,6 +8,8 @@ import DatePickerPopup, {
 import { GetBillDataType, useGetBillDate } from "../../stores/bills.store";
 import TagIcon from "../../components/tag-icon/tag-icon.component";
 import { ProgressBar } from "antd-mobile";
+import ChartComponent from "../../components/chart/chart.component";
+import type { EChartsOption } from "echarts";
 
 import styles from "./statistics.styles.module.scss";
 
@@ -47,6 +49,41 @@ const Statistics = () => {
     });
   }, [getBillDate, currentTime]);
 
+  const data = currentPayType === 1 ? expenseData : incomeData;
+
+  const option = {
+    title: {
+      text: currentPayType === 1 ? "支出构成" : "收入构成",
+      top: "top",
+      x: "20",
+    },
+    tooltip: {
+      trigger: "item",
+      formatter: "{a} <br/>{b} : {c} ({d}%)",
+    },
+    series: [
+      {
+        name: currentPayType === 1 ? "支出" : "收入",
+        type: "pie",
+        radius: ["40%", "60%"],
+        center: ["50%", "50%"],
+        data: data.map((item) => {
+          return {
+            value: item.number,
+            name: item.tagName,
+          };
+        }),
+        emphasis: {
+          itemStyle: {
+            shadowBlur: 10,
+            shadowOffsetX: 0,
+            shadowColor: "rgba(0, 0, 0, 0.5)",
+          },
+        },
+      },
+    ],
+  };
+
   return (
     <div className={styles.container}>
       <div className={classNames({ [styles.headContainer]: true })}>
@@ -77,7 +114,9 @@ const Statistics = () => {
           currentPayType === 1 ? totalExpense : totalIncome
         }`}</div>
       </div>
-
+      <div className={styles.eChartContainer}>
+        <ChartComponent option={option as EChartsOption} />
+      </div>
       <div className={styles.billItemContainer}>
         {(currentPayType === 1 ? expenseData : incomeData).map((item) => {
           const { tagId, tagName, number } = item;

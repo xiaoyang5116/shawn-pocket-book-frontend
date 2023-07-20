@@ -5,6 +5,7 @@ $gray: rgba(
 );
 
 .container {
+  margin-bottom: 60px;
   .headContainer {
     background-color: $expenseColor;
     padding: 40px 20px 24px;
@@ -95,5 +96,10 @@ $gray: rgba(
         width: 52%;
       }
     }
+  }
+
+  .eChartContainer {
+    margin-top: 40px;
+    min-height: 300px;
   }
 }
