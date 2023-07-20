@@ -1,6 +1,99 @@
+$expenseColor: #1677ff;
+$gray: rgba(
+  $color: #ffffff,
+  $alpha: 0.7
+);
+
 .container {
+  .headContainer {
+    background-color: $expenseColor;
+    padding: 40px 20px 24px;
+  }
+
   .timeContainer {
-    margin-top: 50px;
-    
+    font-size: 16px;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .time {
+      display: flex;
+      align-items: center;
+      span {
+        margin-right: 8px;
+      }
+      :global {
+        .antd-mobile-icon {
+          font-size: 20px;
+        }
+      }
+    }
+
+    .payTypeContainer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+
+      span {
+        padding: 8px 12px;
+        color: $gray;
+      }
+
+      span:first-child {
+        margin-right: 12px;
+      }
+
+      .payType {
+        color: #fff;
+        background-color: rgba($color: #ffffff, $alpha: 0.1);
+      }
+    }
+  }
+
+  .payTypeTitle {
+    color: $gray;
+    margin-top: 12px;
+    margin-bottom: 8px;
+    font-size: 14px;
+  }
+
+  .amount {
+    color: #fff;
+    font-size: 24px;
+  }
+
+  .billItemContainer {
+    margin-top: 12px;
+    .billItem {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      padding: 18px 12px 0;
+      .left {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        width: 48%;
+      }
+
+      :global {
+        .antd-mobile-icon {
+          font-size: 35px;
+          padding: 6px;
+          color: #fff;
+          background-color: $expenseColor;
+          border-radius: 30px;
+        }
+      }
+
+      .tagName {
+        font-size: 14px;
+        padding-left: 8px;
+      }
+
+      .progressBar {
+        width: 52%;
+      }
+    }
   }
 }

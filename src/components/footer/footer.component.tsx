@@ -16,7 +16,7 @@ const Footer = () => {
     <div className={`safeArea-container ${styles.container}`}>
       <TabBar activeKey={location.pathname} onChange={navigationHandler}>
         <TabBar.Item
-          key={""}
+          key={"/"}
           icon={<BillOutline />}
           title={"账单"}
           // badge={Badge.dot}

@@ -47,6 +47,17 @@ type AddBillType = {
   tagId: number;
 };
 
+export type GetBillDataType = {
+  total_expense: number;
+  total_income: number;
+  total_data: {
+    tagId: number;
+    tagName: string;
+    pay_type: number;
+    number: number;
+  }[];
+};
+
 export type BillsStoreType = {
   list: BillsType[];
   totalExpense: number;
@@ -67,6 +78,7 @@ export type BillsStoreType = {
     id: number,
     date: { amount: number; createTime: string; remark: string; tagId: number }
   ) => Promise<BillType>;
+  getBillDate: (time: string) => Promise<GetBillDataType>;
 };
 
 export const useBillsStore = create<BillsStoreType>((set, get) => ({
@@ -108,6 +120,13 @@ export const useBillsStore = create<BillsStoreType>((set, get) => ({
   updateBill: async (id, date) => {
     return await request.patch(`/bill/${id}`, date);
   },
+  getBillDate: async (time) => {
+    return await request.get("/bill/data", {
+      params: {
+        date: time,
+      },
+    });
+  },
 }));
 
 export const useBills = () => useBillsStore((state) => state.list);
@@ -133,3 +152,5 @@ export const useGetBillDetail = () =>
 
 export const useDeleteBill = () => useBillsStore((state) => state.deleteBill);
 export const useUpdateBill = () => useBillsStore((state) => state.updateBill);
+
+export const useGetBillDate = () => useBillsStore((state) => state.getBillDate);
