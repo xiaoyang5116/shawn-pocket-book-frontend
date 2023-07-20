@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../../components/header/header.component";
 import { BillType, useDeleteBill } from "../../stores/bills.store";
@@ -6,13 +6,18 @@ import dayjs from "dayjs";
 import TagIcon from "../../components/tag-icon/tag-icon.component";
 import { DeleteOutline, FillinOutline } from "antd-mobile-icons";
 import { Dialog } from "antd-mobile";
+import BillAddPopup, {
+  BillAddPopupType,
+} from "../../components/bill-add-popup/bill-add-popup.component";
 
 import styles from "./bill-detail.styles.module.scss";
 
 const BillDetail = () => {
-  const { state: bill } = useLocation() as { state: BillType };
+  const { state } = useLocation() as { state: BillType };
   const navigate = useNavigate();
   const deleteBill = useDeleteBill();
+  const billAddPopupRef = useRef<BillAddPopupType>(null);
+  const [bill, setBill] = useState(state);
 
   const deleteHandler = () => {
     deleteBill(bill.id).then(() => navigate(-1));
@@ -38,6 +43,12 @@ const BillDetail = () => {
         ],
       ],
     });
+  };
+
+  const refreshHandler = (date: BillType | undefined) => {
+    if (date) {
+      setBill(date);
+    }
   };
 
   useEffect(() => {
@@ -78,12 +89,20 @@ const BillDetail = () => {
             <span>删除</span>
           </div>
           <span>|</span>
-          <div className={styles.item}>
+          <div
+            className={styles.item}
+            onClick={() => billAddPopupRef.current?.show()}
+          >
             <FillinOutline />
             <span>编辑</span>
           </div>
         </div>
       </div>
+      <BillAddPopup
+        ref={billAddPopupRef}
+        billDetail={bill}
+        refreshHandler={refreshHandler}
+      />
     </div>
   );
 };

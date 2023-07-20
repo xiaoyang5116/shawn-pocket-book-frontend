@@ -1,30 +1,38 @@
-import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { Popup, Toast, NumberKeyboard, TextArea } from "antd-mobile";
 import { CloseOutline, DownOutline } from "antd-mobile-icons";
 import dayjs from "dayjs";
 import DatePickerPopup, {
   DatePickerPopupType,
 } from "../date-picker-popup/date-picker-popup.component";
-
-import styles from "./bill-add-popup.styles.module.scss";
 import { useTags } from "../../stores/tag.store";
 import TagIcon from "../tag-icon/tag-icon.component";
-import { useAddBill } from "../../stores/bills.store";
+import { BillType, useAddBill, useUpdateBill } from "../../stores/bills.store";
+
+import styles from "./bill-add-popup.styles.module.scss";
 
 export type BillAddPopupType = {
-  billAddPopupShow: () => void;
+  show: () => void;
 };
 
 type BillAddPopupProps = {
-  refreshHandler?: () => void;
+  refreshHandler?: (bill?: BillType) => void;
+  billDetail?: BillType;
 };
 
 const BillAddPopup = forwardRef<BillAddPopupType, BillAddPopupProps>(
-  ({ refreshHandler }, ref) => {
+  ({ refreshHandler, billDetail }, ref) => {
     const tas = useTags();
     const addBill = useAddBill();
+    const updateBill = useUpdateBill();
     const [visible, setVisible] = useState(false);
-    const [time, setTime] = useState(dayjs().toDate().toLocaleDateString());
+    const [time, setTime] = useState(dayjs().toDate().toString());
     const [tagsIndex, setTagsIndex] = useState(0);
     const [pay_type, setPay_type] = useState(1);
     const [amount, setAmount] = useState("");
@@ -84,41 +92,124 @@ const BillAddPopup = forwardRef<BillAddPopupType, BillAddPopupProps>(
     };
 
     const billAddHandler = async () => {
-      const currTime = dayjs().toDate();
-      const createTime = dayjs(time)
-        .toDate()
-        .setHours(
-          currTime.getHours(),
-          currTime.getMinutes(),
-          currTime.getSeconds()
-        );
+      const currTime = dayjs();
+      const isAfter = dayjs(time).isAfter(currTime);
 
+      let createTime;
+
+      if (isAfter) {
+        createTime = dayjs(time)
+          .toDate()
+          .setHours(
+            currTime.toDate().getHours(),
+            currTime.toDate().getMinutes(),
+            currTime.toDate().getSeconds()
+          );
+      } else {
+        if (
+          dayjs(time).format("YYYY-MM-DD") === currTime.format("YYYY-MM-DD")
+        ) {
+          createTime = dayjs(time)
+            .toDate()
+            .setHours(
+              currTime.toDate().getHours(),
+              currTime.toDate().getMinutes(),
+              currTime.toDate().getSeconds()
+            );
+        } else {
+          createTime = dayjs(time).toDate().setHours(23, 59, 59);
+        }
+      }
+
+      await addBill({
+        amount: +amount,
+        remark: remark,
+        createTime: dayjs(createTime).toJSON(),
+        tagId: tas.find((item) => item.pay_type === pay_type)?.tags[tagsIndex]
+          .id as number,
+      }).then(() => {
+        if (refreshHandler) {
+          refreshHandler();
+        }
+      });
+
+      setTagsIndex(0);
+      setPay_type(1);
+      setAmount("");
+      setRemark("");
+      setTime(dayjs().toDate().toJSON());
+      closeHandler();
+    };
+
+    const updateBillHandler = async () => {
+      const currTime = dayjs(time);
+      const preTime = dayjs(billDetail?.createTime);
+      const isAfter = preTime.isAfter(currTime);
+
+      let createTime;
+
+      if (
+        currTime.format("YYYY-MM-DD") ===
+        dayjs(billDetail?.createTime).format("YYYY-MM-DD")
+      ) {
+        createTime = dayjs(billDetail?.createTime).toJSON();
+      } else {
+        if (isAfter) {
+          createTime = currTime.toDate().setHours(23.59, 59);
+        } else {
+          createTime = currTime
+            .toDate()
+            .setHours(
+              currTime.toDate().getHours(),
+              currTime.toDate().getMinutes(),
+              currTime.toDate().getSeconds()
+            );
+        }
+      }
+
+      await updateBill(billDetail?.id as number, {
+        amount: +amount,
+        remark: remark,
+        tagId: tas.find((item) => item.pay_type === pay_type)?.tags[tagsIndex]
+          .id as number,
+        createTime: createTime as string,
+      }).then((date) => {
+        if (refreshHandler) {
+          refreshHandler(date);
+          closeHandler();
+        }
+      });
+    };
+
+    const confirmHandler = () => {
       if (amount) {
-        await addBill({
-          amount: +amount,
-          remark: remark,
-          createTime: dayjs(createTime).toDate().toJSON(),
-          tagId: tas.find((item) => item.pay_type === pay_type)?.tags[tagsIndex]
-            .id as number,
-        }).then(() => {
-          if (refreshHandler) {
-            refreshHandler();
-          }
-        });
-        setTagsIndex(0);
-        setPay_type(1);
-        setAmount("");
-        setRemark("");
-        setTime(currTime.toLocaleDateString());
-        closeHandler();
+        if (billDetail && billDetail.id) {
+          updateBillHandler();
+        } else {
+          billAddHandler();
+        }
       } else {
         Toast.show("请输入金额");
       }
     };
 
+    useEffect(() => {
+      if (billDetail && billDetail.id) {
+        const tagsIndex = tas
+          .find((item) => item.pay_type === billDetail.pay_type)
+          ?.tags.findIndex((item) => item.id === billDetail.tagId);
+
+        setTime(billDetail.createTime);
+        setPay_type(billDetail.pay_type);
+        setTagsIndex(tagsIndex as number);
+        setAmount(billDetail.amount.toString());
+        setRemark(billDetail.remark);
+      }
+    }, [billDetail, tas]);
+
     useImperativeHandle(ref, () => {
       return {
-        billAddPopupShow: defaultShowHandler,
+        show: defaultShowHandler,
       };
     });
 
@@ -206,11 +297,12 @@ const BillAddPopup = forwardRef<BillAddPopupType, BillAddPopupProps>(
             onInput={amountHandler}
             customKey={"."}
             confirmText="确定"
-            onConfirm={billAddHandler}
+            onConfirm={confirmHandler}
           />
         </div>
         <DatePickerPopup
           ref={datePickerPopupRef}
+          defaultValue={dayjs(time).toDate()}
           setTime={setTime}
           columnType={["year", "month", "day"]}
           closeCallback={() => setKeyboardIsShow(true)}

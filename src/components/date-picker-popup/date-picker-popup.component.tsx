@@ -9,6 +9,7 @@ export type DatePickerPopupType = {
 type DatePickerProps = {
   setTime: (item: string) => void;
   closeCallback?: () => void;
+  defaultValue?: Date;
   columnType: (
     | "year"
     | "month"
@@ -23,7 +24,7 @@ type DatePickerProps = {
 };
 
 const DatePickerPopup = forwardRef<DatePickerPopupType, DatePickerProps>(
-  ({ setTime, columnType, closeCallback }, ref) => {
+  ({ setTime, columnType, closeCallback, defaultValue }, ref) => {
     const [visible, setVisible] = useState(false);
 
     const closeHandler = () => {
@@ -49,6 +50,7 @@ const DatePickerPopup = forwardRef<DatePickerPopupType, DatePickerProps>(
       <DatePicker
         visible={visible}
         columnType={columnType}
+        defaultValue={defaultValue ? defaultValue : undefined}
         onConfirm={(value) => {
           setTime(value.toLocaleString());
           closeHandler();

@@ -63,6 +63,10 @@ export type BillsStoreType = {
   addBill: (param: AddBillType) => Promise<void>;
   billDetail: (id: number) => Promise<BillType>;
   deleteBill: (id: number) => Promise<void>;
+  updateBill: (
+    id: number,
+    date: { amount: number; createTime: string; remark: string; tagId: number }
+  ) => Promise<BillType>;
 };
 
 export const useBillsStore = create<BillsStoreType>((set, get) => ({
@@ -101,6 +105,9 @@ export const useBillsStore = create<BillsStoreType>((set, get) => ({
   deleteBill: async (id) => {
     return await request.delete(`/bill/${id}`);
   },
+  updateBill: async (id, date) => {
+    return await request.patch(`/bill/${id}`, date);
+  },
 }));
 
 export const useBills = () => useBillsStore((state) => state.list);
@@ -125,3 +132,4 @@ export const useGetBillDetail = () =>
   useBillsStore((state) => state.billDetail);
 
 export const useDeleteBill = () => useBillsStore((state) => state.deleteBill);
+export const useUpdateBill = () => useBillsStore((state) => state.updateBill);

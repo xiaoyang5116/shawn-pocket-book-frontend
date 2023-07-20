@@ -83,7 +83,7 @@ const Bill = () => {
 
   const tagPopupShow = () => tagPopupRef.current?.tapPopupShow();
   const datePickerPopupShow = () => datePickerPopupRef.current?.show();
-  const billAddPopupShow = () => billAddPopupRef.current?.billAddPopupShow();
+  const billAddPopupShow = () => billAddPopupRef.current?.show();
 
   return (
     <div className={styles.container}>
