@@ -41,12 +41,12 @@ const BillItem = ({ bill }: BillItemProps) => {
     const currentDayExpense = bills
       .filter((item) => item.pay_type === Pay_Type["支出"])
       .reduce((curr, item) => (curr += item.amount), 0);
-    setDayIncome(currentDayExpense);
+    setDayExpense(currentDayExpense);
 
     const currentDayIncome = bills
       .filter((item) => item.pay_type === Pay_Type["收入"])
       .reduce((curr, item) => (curr += item.amount), 0);
-    setDayExpense(currentDayIncome);
+    setDayIncome(currentDayIncome);
   }, [bills]);
 
   return (

@@ -7,6 +7,7 @@ import { useToken } from "./stores/token.store";
 import { useEffect } from "react";
 import Bill from "./route/bill/bill.component";
 import BillDetail from "./route/bill-detail/bill-detail.component";
+import Statistics from "./route/statistics/statistics.component";
 
 function App() {
   const token = useToken();
@@ -26,7 +27,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigation />}>
           <Route index element={<Bill />} />
-          <Route path="statistics" element={<div>统计</div>} />
+          <Route path="statistics" element={<Statistics />} />
           <Route path="user" element={<div>我的</div>} />
         </Route>
         <Route path="/detail/:id" element={<BillDetail />} />
