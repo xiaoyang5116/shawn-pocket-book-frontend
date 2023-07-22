@@ -27,9 +27,7 @@ const UserInfo = () => {
   const updateUserInfo = useUpdateUserInfo();
   const navigate = useNavigate();
 
-  const [avatarUrl, setAvatarUrl] = useState(
-    imageUrlTrans(userInfo?.avatar as string)
-  );
+  const [avatarUrl, setAvatarUrl] = useState(userInfo?.avatar as string);
   const [signature, setSignature] = useState<string | undefined>(
     userInfo?.signature
   );
@@ -39,7 +37,7 @@ const UserInfo = () => {
     const formData = new FormData();
     // 生成 form-data 数据类型
     formData.append("avatar", file);
-    uploadImage(formData).then((result) => setAvatarUrl(imageUrlTrans(result)));
+    uploadImage(formData).then((result) => setAvatarUrl(result));
     return {
       url: URL.createObjectURL(file),
     };
@@ -84,7 +82,7 @@ const UserInfo = () => {
         <Divider />
         <div className={styles.imgContainer}>
           <Image
-            src={`${avatarUrl}`}
+            src={imageUrlTrans(avatarUrl)}
             className={styles.img}
             fit="cover"
             onClick={() => setImgVisible(true)}
@@ -128,7 +126,7 @@ const UserInfo = () => {
         </Button>
       </div>
       <ImageViewer
-        image={`${avatarUrl}`}
+        image={imageUrlTrans(avatarUrl)}
         visible={imgVisible}
         onClose={() => {
           setImgVisible(false);
