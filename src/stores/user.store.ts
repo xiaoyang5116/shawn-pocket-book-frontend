@@ -9,11 +9,18 @@ type User = {
   avatar: string;
 };
 
+export type ResetPasswordType = {
+  oldPassword: string;
+  newPassword: string;
+  confirmPassword: string;
+};
+
 type UserStoreType = {
   user: User | null;
   getUserInfo: () => Promise<User>;
   uploadImage: (formDate: FormData) => Promise<string>;
   updateUserInfo: (user: Partial<User>) => Promise<void>;
+  resetPassword: (data: ResetPasswordType) => Promise<void>;
 };
 
 const useUserStore = create<UserStoreType>()(
@@ -42,6 +49,9 @@ const useUserStore = create<UserStoreType>()(
         const result: User = await request.patch("/user/edit_userinfo", user);
         set({ user: result });
       },
+      resetPassword: async (data) => {
+        return await request.patch("/user/reset_password", data);
+      },
     }),
     { name: "user-store" }
   )
@@ -52,3 +62,5 @@ export const useGetUserInfo = () => useUserStore((state) => state.getUserInfo);
 export const useUploadImage = () => useUserStore((state) => state.uploadImage);
 export const useUpdateUserInfo = () =>
   useUserStore((state) => state.updateUserInfo);
+export const useResetPassword = () =>
+  useUserStore((state) => state.resetPassword);
