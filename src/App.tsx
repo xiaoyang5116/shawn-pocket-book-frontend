@@ -8,6 +8,8 @@ import { useEffect } from "react";
 import Bill from "./route/bill/bill.component";
 import BillDetail from "./route/bill-detail/bill-detail.component";
 import Statistics from "./route/statistics/statistics.component";
+import User from "./route/user/user.component";
+import UserInfo from "./route/user-info/user-info.component";
 
 function App() {
   const token = useToken();
@@ -28,9 +30,10 @@ function App() {
         <Route path="/" element={<Navigation />}>
           <Route index element={<Bill />} />
           <Route path="statistics" element={<Statistics />} />
-          <Route path="user" element={<div>我的</div>} />
+          <Route path="user" element={<User />} />
         </Route>
         <Route path="/detail/:id" element={<BillDetail />} />
+        <Route path="/userInfo" element={<UserInfo />} />
         <Route path="/auth" element={<Authentication />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>

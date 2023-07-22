@@ -3,7 +3,12 @@ import { Toast } from "antd-mobile";
 import type { ToastHandler } from "antd-mobile/es/components/toast";
 import { useTokenStore } from "../stores/token.store";
 
-const MODE = import.meta.env.MODE; // 环境变量
+// const MODE = import.meta.env.MODE; // 环境变量
+
+export const baseUrl =
+  import.meta.env.MODE == "development"
+    ? "http://127.0.0.1:5173/api"
+    : "https://nest-test-60543-10-1305656531.sh.run.tcloudbase.com";
 
 let loadingInstance: ToastHandler | null = null;
 let requestNum = 0;
@@ -39,10 +44,7 @@ const createAxiosByInterceptors = (
   // 创建一个 axios 实例
   const instance = axios.create({
     // 所有的请求地址前缀部分
-    baseURL:
-      MODE == "development"
-        ? "http://127.0.0.1:5173/api"
-        : "https://nest-test-60543-10-1305656531.sh.run.tcloudbase.com",
+    baseURL: baseUrl,
     timeout: 60000, // 请求超时时间毫秒
     headers: {
       // 设置后端需要的传参类型

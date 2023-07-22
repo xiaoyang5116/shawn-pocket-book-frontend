@@ -1,5 +1,5 @@
 import { TabBar } from "antd-mobile";
-import { BillOutline, HistogramOutline, UserOutline } from "antd-mobile-icons";
+import { BillOutline, PieOutline, UserOutline } from "antd-mobile-icons";
 import { useNavigate, useLocation } from "react-router-dom";
 
 import styles from "./footer.styles.module.scss";
@@ -23,7 +23,7 @@ const Footer = () => {
         />
         <TabBar.Item
           key={"/statistics"}
-          icon={<HistogramOutline />}
+          icon={<PieOutline />}
           title={"统计"}
           // badge={Badge.dot}
         />

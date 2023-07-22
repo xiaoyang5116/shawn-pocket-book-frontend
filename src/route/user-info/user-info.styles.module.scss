@@ -1,0 +1,63 @@
+.container {
+  min-height: 100vh;
+
+  .mainContainer {
+    padding: 12px 12px 0;
+
+    .imgContainer {
+      margin-top: 24px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: flex-start;
+
+      .img {
+        width: 100px;
+        height: 100px;
+        border-radius: 50px;
+        overflow: hidden;
+        border: 1px solid #eee;
+      }
+      .text {
+        flex: 1;
+        padding: 0 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .imgUpload {
+        margin-top: 12px;
+        --cell-size: 0;
+
+        :global {
+          .adm-space-horizontal > .adm-space-item {
+            margin-right: 0;
+          }
+        }
+      }
+    }
+
+    .signatureContainer {
+      margin: 24px 0;
+      .title {
+        font-size: 20px;
+        color: #7e7e7e;
+      }
+      .signature {
+        margin-top: 18px;
+
+        :global {
+          .adm-text-area {
+            padding: 12px;
+            --font-size: 20px;
+            border: 1px solid #eee;
+          }
+        }
+      }
+    }
+
+    .button {
+      margin-top: 48px;
+    }
+  }
+}
