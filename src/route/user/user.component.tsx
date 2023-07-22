@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useGetUserInfo, useUser } from "../../stores/user.store";
-import { Avatar, List } from "antd-mobile";
+import { Avatar, List, Button } from "antd-mobile";
 import { UserSetOutline, LockOutline, TeamOutline } from "antd-mobile-icons";
 import { useNavigate } from "react-router-dom";
 import { imageUrlTrans } from "../../utils/image-url.utils";
@@ -11,6 +11,11 @@ const User = () => {
   const user = useUser();
   const getUserInfo = useGetUserInfo();
   const navigate = useNavigate();
+
+  const signOutHandler = () => {
+    localStorage.clear();
+    location.href = "/auth";
+  };
 
   useEffect(() => {
     if (!user) {
@@ -55,6 +60,12 @@ const User = () => {
             关于我们
           </List.Item>
         </List>
+      </div>
+
+      <div className={styles.signOut}>
+        <Button color="danger" size="large" block onClick={signOutHandler}>
+          退出登录
+        </Button>
       </div>
     </div>
   );
