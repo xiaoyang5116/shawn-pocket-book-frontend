@@ -11,6 +11,7 @@ import Statistics from "./route/statistics/statistics.component";
 import User from "./route/user/user.component";
 import UserInfo from "./route/user-info/user-info.component";
 import Account from "./route/account/account.components";
+import About from "./route/about/about.component";
 
 function App() {
   const token = useToken();
@@ -36,6 +37,7 @@ function App() {
         <Route path="/detail/:id" element={<BillDetail />} />
         <Route path="/userInfo" element={<UserInfo />} />
         <Route path="/account" element={<Account />} />
+        <Route path="/about" element={<About />} />
         <Route path="/auth" element={<Authentication />} />
         <Route path="*" element={<NoMatch />} />
       </Routes>

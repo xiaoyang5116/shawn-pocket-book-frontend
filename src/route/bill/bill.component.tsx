@@ -134,7 +134,7 @@ const Bill = () => {
               icon={<SmileOutline />}
               status="success"
               title="欢迎来到 shawn 记账本"
-              description="目前还没有账单，来记一笔吧！"
+              description="这个月还没有账单，来记一笔吧！"
             />
           )}
         </PullToRefresh>

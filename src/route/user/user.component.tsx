@@ -57,7 +57,7 @@ const User = () => {
             prefix={<TeamOutline />}
             onClick={() => navigate("/about")}
           >
-            关于我们
+            关于
           </List.Item>
         </List>
       </div>
