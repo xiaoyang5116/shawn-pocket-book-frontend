@@ -16,9 +16,9 @@ import {
   useUser,
 } from "../../stores/user.store";
 import { imageUrlTrans } from "../../utils/image-url.utils";
+import { useNavigate } from "react-router-dom";
 
 import styles from "./user-info.styles.module.scss";
-import { useNavigate } from "react-router-dom";
 
 const UserInfo = () => {
   const userInfo = useUser();
