@@ -87,9 +87,9 @@ const UserInfo = () => {
             fit="cover"
             onClick={() => setImgVisible(true)}
           />
-          {/* <div className={styles.text}> */}
-            {/* <div>支持 jpg、png、jpeg 格式大小 200KB 以内的图片</div> */}
-            {/* <ImageUploader
+          <div className={styles.text}>
+            <div>支持 jpg、png、jpeg 格式大小 200KB 以内的图片</div>
+            <ImageUploader
               preview={false}
               showFailed={false}
               className={styles.imgUpload}
@@ -99,10 +99,10 @@ const UserInfo = () => {
               <Button block color="primary" size="small">
                 点击上传
               </Button>
-            </ImageUploader> */}
-          {/* </div> */}
+            </ImageUploader>
+          </div>
         </div>
-        {/* <Divider /> */}
+        <Divider />
         <div className={styles.signatureContainer}>
           <div className={styles.title}>个性签名</div>
           <div className={styles.signature}>
