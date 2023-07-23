@@ -14,7 +14,12 @@ const About = () => {
         <p>QQ邮箱: 1443584075@qq.com</p>
         <p>
           <a href="https://github.com/xiaoyang5116/shawn-pocket-book-frontend">
-            Github
+            前端地址
+          </a>
+        </p>
+        <p>
+          <a href="https://github.com/xiaoyang5116/shawn-pocket-book-backend">
+            后端地址
           </a>
         </p>
       </div>
