@@ -241,6 +241,14 @@ const BillAddPopup = forwardRef<BillAddPopupType, BillAddPopupProps>(
               >
                 收入
               </span>
+              <span
+                className={
+                  pay_type === 0 ? styles.pay_type_active : styles.pay_type
+                }
+                onClick={() => togglePayType(0)}
+              >
+                不计入收支
+              </span>
             </div>
             <span
               className={styles.timeContainer}
@@ -249,7 +257,6 @@ const BillAddPopup = forwardRef<BillAddPopupType, BillAddPopupProps>(
               {formatTime}
               <DownOutline className={styles.icon} />
             </span>
-            {/* <span className={style.pay_type}>不计入</span> */}
           </div>
           <div className={styles.amountContainer}>
             <span className={styles.amountIcon}>¥</span>

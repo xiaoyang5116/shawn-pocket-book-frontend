@@ -66,12 +66,14 @@
   }
 
   .tagContainer {
+    height: 130px;
+    overflow: scroll;
     margin-top: 14px;
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     row-gap: 12px;
     column-gap: 12px;
-    align-items: center;
+    align-content: space-between;
 
     .tag,
     .tag_active {
