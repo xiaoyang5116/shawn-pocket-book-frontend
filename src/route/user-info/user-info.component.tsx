@@ -4,7 +4,7 @@ import {
   Divider,
   Image,
   ImageViewer,
-  ImageUploader,
+  // ImageUploader,
   Toast,
   Button,
   TextArea,
@@ -12,7 +12,7 @@ import {
 import {
   useGetUserInfo,
   useUpdateUserInfo,
-  useUploadImage,
+  // useUploadImage,
   useUser,
 } from "../../stores/user.store";
 import { imageUrlTrans } from "../../utils/image-url.utils";
@@ -23,7 +23,7 @@ import styles from "./user-info.styles.module.scss";
 const UserInfo = () => {
   const userInfo = useUser();
   const getUserInfo = useGetUserInfo();
-  const uploadImage = useUploadImage();
+  // const uploadImage = useUploadImage();
   const updateUserInfo = useUpdateUserInfo();
   const navigate = useNavigate();
 
@@ -33,23 +33,23 @@ const UserInfo = () => {
   );
   const [imgVisible, setImgVisible] = useState(false);
 
-  const mockUpload = async (file: File) => {
-    const formData = new FormData();
-    // 生成 form-data 数据类型
-    formData.append("avatar", file);
-    uploadImage(formData).then((result) => setAvatarUrl(result));
-    return {
-      url: URL.createObjectURL(file),
-    };
-  };
+  // const mockUpload = async (file: File) => {
+  //   const formData = new FormData();
+  //   // 生成 form-data 数据类型
+  //   formData.append("avatar", file);
+  //   uploadImage(formData).then((result) => setAvatarUrl(result));
+  //   return {
+  //     url: URL.createObjectURL(file),
+  //   };
+  // };
 
-  const beforeUpload = (file: File) => {
-    if (file.size > 1024 * 1024) {
-      Toast.show("请选择小于 1M 的图片");
-      return null;
-    }
-    return file;
-  };
+  // const beforeUpload = (file: File) => {
+  //   if (file.size > 1024 * 1024) {
+  //     Toast.show("请选择小于 1M 的图片");
+  //     return null;
+  //   }
+  //   return file;
+  // };
 
   const saveHandler = () => {
     if (!signature) {
@@ -87,9 +87,9 @@ const UserInfo = () => {
             fit="cover"
             onClick={() => setImgVisible(true)}
           />
-          <div className={styles.text}>
-            <div>支持 jpg、png、jpeg 格式大小 200KB 以内的图片</div>
-            <ImageUploader
+          {/* <div className={styles.text}> */}
+            {/* <div>支持 jpg、png、jpeg 格式大小 200KB 以内的图片</div> */}
+            {/* <ImageUploader
               preview={false}
               showFailed={false}
               className={styles.imgUpload}
@@ -99,10 +99,10 @@ const UserInfo = () => {
               <Button block color="primary" size="small">
                 点击上传
               </Button>
-            </ImageUploader>
-          </div>
+            </ImageUploader> */}
+          {/* </div> */}
         </div>
-        <Divider />
+        {/* <Divider /> */}
         <div className={styles.signatureContainer}>
           <div className={styles.title}>个性签名</div>
           <div className={styles.signature}>
