@@ -1,8 +1,10 @@
 import { useEffect, Suspense, lazy } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import { SafeArea } from "antd-mobile";
+import { SafeArea, Result } from "antd-mobile";
+import { SmileOutline } from "antd-mobile-icons";
 import { useToken } from "./stores/token.store";
 import SkeletonPage from "./components/skeleton-page/skeleton-page.component";
+import { isMobile } from "react-device-detect";
 
 const Navigation = lazy(
   () => import("./route/navigation/navigation.component")
@@ -27,11 +29,26 @@ function App() {
   const token = useToken();
   const navigate = useNavigate();
 
+  // console.log("isMobile", isMobile);
+
   useEffect(() => {
-    if (!token && location.pathname !== "/auth") {
+    if (!token && location.pathname !== "/auth" && isMobile) {
       navigate("/auth");
     }
   }, [token, navigate]);
+
+  if (!isMobile) {
+    return (
+      <div>
+        <Result
+          icon={<SmileOutline />}
+          status="success"
+          title="欢迎来到 shawn 记账本"
+          description="请使用手机浏览器访问"
+        />
+      </div>
+    );
+  }
 
   return (
     <Suspense fallback={<SkeletonPage />}>
