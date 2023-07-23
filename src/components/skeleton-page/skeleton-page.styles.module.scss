@@ -1,0 +1,23 @@
+.container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .customSkeleton {
+    --height: 90px;
+  }
+
+  .title {
+    --height: 140px;
+    --width: 94%;
+    --border-radius: 8px;
+  }
+
+  .footer {
+    position: fixed;
+    bottom: 0;
+    --height: 48px;
+    --width: 100%;
+  }
+}

@@ -1,17 +1,27 @@
+import { useEffect, Suspense, lazy } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { SafeArea } from "antd-mobile";
-import Navigation from "./route/navigation/navigation.component";
-import NoMatch from "./route/no-match/no-match.component";
-import Authentication from "./route/authentication/authentication.component";
 import { useToken } from "./stores/token.store";
-import { useEffect } from "react";
-import Bill from "./route/bill/bill.component";
-import BillDetail from "./route/bill-detail/bill-detail.component";
-import Statistics from "./route/statistics/statistics.component";
-import User from "./route/user/user.component";
-import UserInfo from "./route/user-info/user-info.component";
-import Account from "./route/account/account.components";
-import About from "./route/about/about.component";
+import SkeletonPage from "./components/skeleton-page/skeleton-page.component";
+
+const Navigation = lazy(
+  () => import("./route/navigation/navigation.component")
+);
+const NoMatch = lazy(() => import("./route/no-match/no-match.component"));
+const Authentication = lazy(
+  () => import("./route/authentication/authentication.component")
+);
+const Bill = lazy(() => import("./route/bill/bill.component"));
+const BillDetail = lazy(
+  () => import("./route/bill-detail/bill-detail.component")
+);
+const Statistics = lazy(
+  () => import("./route/statistics/statistics.component")
+);
+const User = lazy(() => import("./route/user/user.component"));
+const UserInfo = lazy(() => import("./route/user-info/user-info.component"));
+const Account = lazy(() => import("./route/account/account.components"));
+const About = lazy(() => import("./route/about/about.component"));
 
 function App() {
   const token = useToken();
@@ -24,7 +34,7 @@ function App() {
   }, [token, navigate]);
 
   return (
-    <>
+    <Suspense fallback={<SkeletonPage />}>
       <div className="safeArea-container">
         <SafeArea position="top" />
       </div>
@@ -44,7 +54,7 @@ function App() {
       <div className="safeArea-container">
         <SafeArea position="bottom" />
       </div>
-    </>
+    </Suspense>
   );
 }
 
