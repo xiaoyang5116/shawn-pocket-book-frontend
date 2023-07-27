@@ -4,6 +4,7 @@ import { Avatar, List, Button } from "antd-mobile";
 import { UserSetOutline, LockOutline, TeamOutline } from "antd-mobile-icons";
 import { useNavigate } from "react-router-dom";
 import { imageUrlTrans } from "../../utils/image-url.utils";
+import { DEFAULT_USER_NAME } from "../../constant/user";
 
 import styles from "./user.styles.module.scss";
 
@@ -27,7 +28,7 @@ const User = () => {
     <div className={styles.container}>
       <div className={styles.headContainer}>
         <div className={styles.headLeft}>
-          <div>昵称：{user?.username}</div>
+          <div>昵称：{user?.username === DEFAULT_USER_NAME ? "游客" : user?.username}</div>
           <div>个性签名：{user?.signature || "暂无个签"}</div>
         </div>
         <Avatar

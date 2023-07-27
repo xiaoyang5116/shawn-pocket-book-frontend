@@ -5,12 +5,14 @@ import { EyeInvisibleOutline, EyeOutline } from "antd-mobile-icons";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z, ZodType } from "zod";
-import { ResetPasswordType, useResetPassword } from "../../stores/user.store";
+import { ResetPasswordType, useResetPassword, useUser } from '../../stores/user.store';
 
 import styles from "./account.styles.module.scss";
 import { useNavigate } from "react-router-dom";
+import { DEFAULT_USER_NAME } from "../../constant/user";
 
 const Account = () => {
+  const userInfo = useUser()
   const resetPassword = useResetPassword();
   const navigate = useNavigate();
   const [oldPasswordVisible, setOldPasswordVisible] = useState(false);
@@ -42,11 +44,14 @@ const Account = () => {
     resolver: zodResolver(validationSchema),
   });
 
-  const onSubmit = (data: ResetPasswordType) =>
+  const onSubmit = (data: ResetPasswordType) => {
+    if (userInfo?.username === DEFAULT_USER_NAME) return Toast.show("游客密码不能修改");
+
     resetPassword(data).then(() => {
       Toast.show("修改成功");
       navigate(-1);
     });
+  }
 
   return (
     <div className={styles.container}>

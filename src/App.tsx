@@ -1,10 +1,12 @@
 import { useEffect, Suspense, lazy } from "react";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { SafeArea, Result } from "antd-mobile";
 import { SmileOutline } from "antd-mobile-icons";
-import { useToken } from "./stores/token.store";
+import { useSetToken, useToken } from "./stores/token.store";
 import SkeletonPage from "./components/skeleton-page/skeleton-page.component";
 import { isMobile } from "react-device-detect";
+import { useLogin } from "./stores/user.store";
+import { DEFAULT_PASSWORD, DEFAULT_USER_NAME } from "./constant/user";
 
 const Navigation = lazy(
   () => import("./route/navigation/navigation.component")
@@ -26,16 +28,18 @@ const Account = lazy(() => import("./route/account/account.components"));
 const About = lazy(() => import("./route/about/about.component"));
 
 function App() {
+  const login = useLogin()
   const token = useToken();
-  const navigate = useNavigate();
-
-  // console.log("isMobile", isMobile);
+  const setToken = useSetToken();
 
   useEffect(() => {
     if (!token && location.pathname !== "/auth" && isMobile) {
-      navigate("/auth");
+      login({
+        username: DEFAULT_USER_NAME,
+        password: DEFAULT_PASSWORD
+      }).then(result => setToken(result.token))
     }
-  }, [token, navigate]);
+  }, [token, login, setToken]);
 
   if (!isMobile) {
     return (

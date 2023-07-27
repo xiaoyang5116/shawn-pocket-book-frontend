@@ -9,6 +9,11 @@ type User = {
   avatar: string;
 };
 
+export type LoginType = {
+  username: string;
+  password: string;
+};
+
 export type ResetPasswordType = {
   oldPassword: string;
   newPassword: string;
@@ -17,6 +22,7 @@ export type ResetPasswordType = {
 
 type UserStoreType = {
   user: User | null;
+  login: (data: LoginType) => Promise<{ token: string }>;
   getUserInfo: () => Promise<User>;
   uploadImage: (formDate: FormData) => Promise<string>;
   updateUserInfo: (user: Partial<User>) => Promise<void>;
@@ -27,6 +33,9 @@ const useUserStore = create<UserStoreType>()(
   persist(
     (set) => ({
       user: null,
+      login: async (data) => {
+        return await request.post("/user/login", data);
+      },
       getUserInfo: async () => {
         const result: User = await request.get("/user/userInfo");
         set({ user: result });
@@ -58,6 +67,7 @@ const useUserStore = create<UserStoreType>()(
 );
 
 export const useUser = () => useUserStore((state) => state.user);
+export const useLogin = () => useUserStore((state) => state.login);
 export const useGetUserInfo = () => useUserStore((state) => state.getUserInfo);
 export const useUploadImage = () => useUserStore((state) => state.uploadImage);
 export const useUpdateUserInfo = () =>
